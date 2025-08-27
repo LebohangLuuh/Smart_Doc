@@ -1,4 +1,4 @@
-# 🩺 Smart-Doc
+# 🩺 Smart_Doc
 **Next-Generation Healthcare Booking Platform**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -12,7 +12,7 @@
 
 ---
 
-## 🌟 Why Choose Smart-Doc?
+## 🌟 Why Choose Smart_Doc?
 
 ### For Patients
 - 🔍 **Effortless Discovery:** Find the right doctor by specialty, location, and availability
@@ -164,8 +164,8 @@ Ensure you have the following installed:
 
 #### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/smart-doc.git
-cd smart-doc
+git clone https://github.com/LebohangLuuh/Smart_Doc.git
+cd smart_doc
 ```
 
 #### 2. Database Setup
@@ -496,7 +496,7 @@ copies or substantial portions of the Software.
 - **📧 Email:** lp.mofokeng96@gmail.com
 - **🌐 Website:** [www.smartdoc.com](https://www.smartdoc.com)
 - **📱 LinkedIn:** [Smart-Doc Official](https://linkedin.com/)
-- **🐙 GitHub:** [@smart-doc](https://github.com/smart-doc)
+- **🐙 GitHub:** [@smart-doc](https://github.com/LebohangLuuh)
 
 ---
 
@@ -514,7 +514,7 @@ Special thanks to:
 
 **Made with ❤️ for better healthcare accessibility**
 
-[⭐ Star this repo](https://github.com/your-username/smart-doc) | [🐛 Report Bug](https://github.com/your-username/smart-doc/issues) | [🚀 Request Feature](https://github.com/your-username/smart-doc/issues)
+[⭐ Star this repo](https://github.com/LebohangLuuh/smart_doc) | [🐛 Report Bug](https://github.com/LebohangLuuh/smart_doc/issues) | [🚀 Request Feature](https://github.com/LebohangLuuh/smart_doc/issues)
 
 ---
 
