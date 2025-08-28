@@ -1,0 +1,36 @@
+@HOST = http://localhost:8080
+@SERVER = {{HOST}}/api/v1/users
+
+### REGISTER USER (Frontend format)
+POST {{SERVER}}/registerUser
+Content-Type: application/json
+
+{
+    "fullname": "John Doe",
+    "email": "john.doe@gmail.com",
+    "role": "doctor",
+    "practiceNumber": "HPCSA123456",
+    "password": "123456",
+    "confirmPassword": "123456"
+}
+
+### REGISTER PATIENT
+POST {{SERVER}}/registerUser
+Content-Type: application/json
+
+{
+    "fullname": "Jane Smith",
+    "email": "jane.smith@gmail.com",
+    "role": "patient",
+    "password": "123456",
+    "confirmPassword": "123456"
+}
+
+### LOGIN USER
+POST {{SERVER}}/login
+Content-Type: application/json
+
+{
+    "email": "john.doe@gmail.com",
+    "password": "123456"
+}

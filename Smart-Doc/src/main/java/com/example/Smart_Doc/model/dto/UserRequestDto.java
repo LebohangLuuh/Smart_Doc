@@ -1,64 +1,72 @@
 package com.example.Smart_Doc.model.dto;
 
 import com.example.Smart_Doc.model.enums.UserRole;
+import com.example.Smart_Doc.validation.PasswordMatches;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.validation.constraints.*;
+
 
 @Data
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@PasswordMatches
 public class UserRequestDto {
+
+    @NotBlank(message = "Full name is required")
+    private String fullname;
+
     @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
+    @Email(message = "Invalid email format")
     private String email;
 
-    @NotBlank(message = "First name is required")
-    @Size(min = 2, max = 50)
-    private String firstName;
-
-    @NotBlank(message = "Last name is required")
-    @Size(min = 2, max = 50)
-    private String lastName;
-
-    @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^[+]?[0-9]{10,15}$", message = "Invalid phone number format")
-    private String phoneNumber;
-
-    @NotNull(message = "Role is required")
-    private UserRole role;
-
-    // Doctor
-    private String practiceNumber;
-    private String specialization;
-    private String qualifications;
-    private Integer yearsOfExperience;
-    private Double consultationFee;
-
-    // Patient
-    private String emergencyContactName;
-    private String emergencyContactPhone;
+    @NotBlank(message = "Role is required")
+    private String role; // Accept as string from frontend
 
     @NotBlank(message = "Password is required")
-    @Size(min = 8, message = "Password must be at least 8 characters")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "Password must contain at least one lowercase letter, one uppercase letter, and one digit")
+    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
 
     @NotBlank(message = "Confirm password is required")
     private String confirmPassword;
 
-    @AssertTrue(message = "Passwords do not match")
-    public boolean isPasswordMatching() {
-        return password != null && password.equals(confirmPassword);
+    // Optional field for doctors
+    private String practiceNumber;
+
+    // Helper methods to split fullname
+    @JsonIgnore
+    public String getFirstName() {
+        if (fullname == null || fullname.trim().isEmpty()) {
+            return "";
+        }
+        String[] parts = fullname.trim().split("\\s+", 2);
+        return parts[0];
     }
 
-    @AssertTrue(message = "Practice number is required for doctors")
-    public boolean isPracticeNumberValid() {
-        if (role == UserRole.DOCTOR) {
-            return practiceNumber != null && !practiceNumber.trim().isEmpty();
+    @JsonIgnore
+    public String getLastName() {
+        if (fullname == null || fullname.trim().isEmpty()) {
+            return "";
         }
-        return true;
+        String[] parts = fullname.trim().split("\\s+", 2);
+        return parts.length > 1 ? parts[1] : "";
+    }
+
+    @JsonIgnore
+    public UserRole getUserRole() {
+        if ("doctor".equalsIgnoreCase(role)) {
+            return UserRole.DOCTOR;
+        } else if ("patient".equalsIgnoreCase(role)) {
+            return UserRole.PATIENT;
+        }
+        throw new IllegalArgumentException("Invalid role: " + role);
     }
 }

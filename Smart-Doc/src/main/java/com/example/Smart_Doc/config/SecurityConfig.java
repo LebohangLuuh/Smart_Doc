@@ -2,20 +2,17 @@ package com.example.Smart_Doc.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.example.Smart_Doc.service.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -23,36 +20,32 @@ import com.example.Smart_Doc.service.UserService;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final UserService userService;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserService userService) {
+    public SecurityConfig(@Lazy JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.userService = userService;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/public/**").permitAll()
-                        .anyRequest().authenticated());
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                // Allow your actual API endpoints
+                .requestMatchers("/api/v1/users/registerUser").permitAll()
+                .requestMatchers("/api/v1/users/login").permitAll()
+                .requestMatchers("/api/v1/users/forgotPassword").permitAll()
+                .requestMatchers("/api/v1/users/resetPassword").permitAll()
+                // Allow common auth patterns
+                .requestMatchers("/register", "/login", "/public/**", "/api/auth/**").permitAll()
+                // Allow actuator endpoints if needed
+                .requestMatchers("/actuator/health").permitAll()
+                // Require authentication for everything else
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            
         return http.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> {
-            var user = userService.getUserByEmail(username);
-            if (user == null) {
-                throw new UsernameNotFoundException("User not found: " + username);
-            }
-            return org.springframework.security.core.userdetails.User.builder()
-                    .username(user.getEmail())
-                    .password(user.getPassword())
-                    .authorities("ROLE_" + user.getRole().name())
-                    .build();
-        };
     }
 
     @Bean

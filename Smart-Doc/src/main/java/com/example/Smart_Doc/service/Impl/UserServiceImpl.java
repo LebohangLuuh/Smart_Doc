@@ -1,5 +1,14 @@
 package com.example.Smart_Doc.service.Impl;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.Smart_Doc.exception.AuthenticationException;
 import com.example.Smart_Doc.exception.DataNotFoundException;
 import com.example.Smart_Doc.mapper.UserMapper;
@@ -13,13 +22,6 @@ import com.example.Smart_Doc.model.entity.User;
 import com.example.Smart_Doc.model.enums.UserRole;
 import com.example.Smart_Doc.repository.UserRepository;
 import com.example.Smart_Doc.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -29,7 +31,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     // private final EmailService emailService; // Inject when available
 
-    @Value("${app.frontend.reset-password-url:http://localhost:3000/reset-password}")
+    @Value("${app.frontend.reset-password-url:http://localhost:4200/reset-password}")
     private String resetPasswordFrontendUrl;
 
     @Autowired
@@ -45,13 +47,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public UserDto registerUser(UserRequestDto userRequestDto) {
-        // Check if user already exists
-        if (userRepository.existsByEmail(userRequestDto.getEmail())) {
-            throw new IllegalArgumentException("User with this email already exists");
-        }
+@Transactional
+public UserDto registerUser(UserRequestDto userRequestDto) {
+    // Password validation is now handled by @PasswordMatches annotation
+    
+    // Check if user already exists
+    if (userRepository.existsByEmail(userRequestDto.getEmail())) {
+        throw new IllegalArgumentException("User with this email already exists");
+    }
 
+    // Validate role-specific requirements
+    if ("doctor".equalsIgnoreCase(userRequestDto.getRole())) {
+        if (userRequestDto.getPracticeNumber() == null || userRequestDto.getPracticeNumber().trim().isEmpty()) {
+            throw new IllegalArgumentException("Practice number is required for doctors");
+        }
+    }
+
+    try {
         // Create user entity
         User user = UserMapper.userRequestDtoToUserEntity(userRequestDto);
         user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
@@ -60,7 +72,10 @@ public class UserServiceImpl implements UserService {
         User savedUser = userRepository.save(user);
         
         return UserMapper.userEntityToUserDto(savedUser);
+    } catch (Exception e) {
+        throw new RuntimeException("Failed to register user: " + e.getMessage(), e);
     }
+}
 
     @Override
     @Transactional(readOnly = true)
