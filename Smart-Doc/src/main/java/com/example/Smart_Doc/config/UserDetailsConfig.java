@@ -1,33 +1,31 @@
+
 package com.example.Smart_Doc.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.example.Smart_Doc.model.entity.User;
+import com.example.Smart_Doc.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-import com.example.Smart_Doc.service.UserService;
+import java.util.Optional;
 
-@Configuration
-public class UserDetailsConfig {
+@Service
+public class UserDetailsConfig implements UserDetailsService {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
-    public UserDetailsConfig(UserService userService) {
-        this.userService = userService;
-    }
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> userOptional = userService.getUserEntityByEmail(email);
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> {
-            var user = userService.getUserByEmail(username);
-            if (user == null) {
-                throw new UsernameNotFoundException("User not found: " + username);
-            }
-            return org.springframework.security.core.userdetails.User.builder()
-                    .username(user.getEmail())
-                    .password(user.getPassword())
-                    .authorities("ROLE_" + user.getRole().name())
-                    .build();
-        };
+        if (userOptional.isEmpty()) {
+            throw new UsernameNotFoundException("User not found with email: " + email);
+        }
+
+        User user = userOptional.get();
+        return new CustomUserPrincipal(user);
     }
 }

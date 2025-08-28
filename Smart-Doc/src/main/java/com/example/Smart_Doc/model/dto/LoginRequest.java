@@ -1,17 +1,22 @@
 package com.example.Smart_Doc.model.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequestDto {
+@AllArgsConstructor
+@Data
+@Setter
+@Getter
+public class LoginRequest {
+
+    @Email(message = "Please enter a valid email")
     @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
     private String email;
-    
+
     @NotBlank(message = "Password is required")
-    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
+
 }
