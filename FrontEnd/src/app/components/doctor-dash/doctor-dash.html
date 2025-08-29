@@ -1,0 +1,203 @@
+<div class="min-h-screen bg-blue-50 flex">
+  <!-- Sidebar -->
+  <div class="w-64 bg-white shadow-lg fixed h-full">
+    <!-- Logo -->
+    <div class="p-6 border-b border-gray-200">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
+          <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"
+            />
+          </svg>
+        </div>
+        <h1 class="text-xl font-bold text-gray-900">Smart-Doc</h1>
+      </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="mt-6">
+      <div class="px-3">
+        <a
+          *ngFor="let item of menuItems"
+          [href]="item.href"
+          [class]="
+            'flex items-center px-3 py-3 text-sm font-medium rounded-lg mb-1 transition-colors duration-200 ' +
+            (item.active
+              ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600'
+              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900')
+          "
+        >
+          <svg class="w-5 h-5 mr-3" [innerHTML]="item.icon" fill="currentColor"></svg>
+          {{ item.name }}
+        </a>
+      </div>
+    </nav>
+
+    <!-- Logout Button -->
+    <div class="absolute bottom-6 left-3 right-3">
+      <button routerLink="/home"
+        class="flex items-center px-3 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg w-full transition-colors duration-200"
+      >
+        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+          />
+        </svg>
+        Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="ml-64 flex-1">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+      <div class="px-6 py-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-bold text-gray-900">Dashboard</h2>
+
+          <!-- Search Bar -->
+          <div class="relative max-w-md">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg
+                class="h-5 w-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+            <input
+              type="text"
+              placeholder="Search By Name, Email"
+              class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Welcome Banner -->
+    <div class="p-6">
+      <div
+        class="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400 rounded-xl p-6 text-white relative overflow-hidden"
+      >
+        <!-- Background Pattern -->
+        <div class="absolute top-0 right-0 -mt-4 -mr-4 opacity-20">
+          <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 100 100">
+            <path d="M20 20h60v60H20z" opacity="0.3" />
+            <path d="M30 30h40v40H30z" opacity="0.5" />
+            <circle cx="80" cy="30" r="8" opacity="0.4" />
+            <circle cx="15" cy="70" r="6" opacity="0.3" />
+          </svg>
+        </div>
+
+        <div class="relative flex items-center justify-between">
+          <div>
+            <h1 class="text-3xl font-bold mb-2">Welcome, Dr. NeT_sOh</h1>
+            <p class="text-blue-100 text-lg">Manage your practice, and track growth.</p>
+          </div>
+
+          <!-- Doctor Illustration -->
+          <div class="hidden md:flex items-center space-x-4">
+            <div class="w-16 h-20 bg-pink-400 rounded-full relative">
+              <div class="absolute top-2 left-4 w-8 h-8 bg-yellow-200 rounded-full"></div>
+            </div>
+            <div class="w-20 h-24 bg-white rounded-lg relative">
+              <div class="absolute top-1 left-1 right-1 h-4 bg-gray-200 rounded"></div>
+              <div class="absolute top-6 left-2 right-2 h-2 bg-blue-600 rounded"></div>
+              <div class="absolute bottom-4 left-1 right-1 h-8 bg-gray-100 rounded"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 animate-bounce  border border-white/20">
+            <div class="text-2xl font-bold">{{ dashboardStats.appointmentsToday }}</div>
+            <div class="text-blue-100 text-sm">Appointments for today</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 animate-bounce border border-white/20">
+            <div class="text-2xl font-bold">{{ dashboardStats.pendingAppointments }}</div>
+            <div class="text-blue-100 text-sm">Pending Appointments</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 animate-bounce border border-white/20">
+            <div class="text-2xl font-bold">{{ dashboardStats.totalPatients }}</div>
+            <div class="text-blue-100 text-sm">Total Patients</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Today's Schedule -->
+    <div class="px-6 pb-6">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <!-- Schedule Header -->
+        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+          <h3 class="text-xl font-semibold text-gray-900">Today's Schedule</h3>
+          <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Appointments List -->
+        <div class="divide-y divide-gray-100">
+          <div
+            *ngFor="let appointment of appointments"
+            class="px-6 py-4 hover:bg-gray-50 transition-colors duration-200"
+          >
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-4">
+                <!-- Time and Type -->
+                <div class="flex w-[12rem] flex-col px-5 space-x-4">
+                  <div class="text-xl font-medium text-gray-900">{{ appointment.time }}</div>
+                  <div class="text-lg text-gray-500">{{ appointment.type }}</div>
+                </div>
+
+                <!-- Color Indicator -->
+                <div [class]="'w-1 h-12 rounded-full ' + appointment.color"></div>
+
+                <!-- Patient Info -->
+                <div class="flex flex-row gap-5 space-y-1 px-10">
+                  <div class="text-lg font-bold text-gray-900">{{ appointment.patientName }}</div>
+                  <span
+                    [class]="
+                      'inline-flex items-center px-3 py-0.5 rounded-full  text-sm font-medium ' +
+                      getStatusClasses(appointment.status)
+                    "
+                  >
+                    {{ appointment.status }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Reschedule Button -->
+              <button
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                Reschedule
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
