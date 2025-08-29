@@ -7,6 +7,9 @@ import com.example.Smart_Doc.model.dto.RegisterRequest;
 import com.example.Smart_Doc.model.dto.UserResponse;
 import com.example.Smart_Doc.model.entity.User;
 import com.example.Smart_Doc.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Service
 @Transactional
 public class UserService {
@@ -28,16 +34,18 @@ public class UserService {
                 return userRepository.findByEmail(email.toLowerCase());
         }
 
-
         public UserResponse registerUser(RegisterRequest registerRequest) {
                 // Validate passwords match
                 if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
                         throw new IllegalArgumentException("Passwords do not match");
                 }
 
+                // Normalize email
+                String normalizedEmail = registerRequest.getEmail().toLowerCase();
+
                 // Check if user already exists
-                if (userRepository.existsByEmail(registerRequest.getEmail())) {
-                        throw new UserAlreadyExistsException("User with email " + registerRequest.getEmail() + " already exists");
+                if (userRepository.existsByEmail(normalizedEmail)) {
+                        throw new UserAlreadyExistsException("User with email " + normalizedEmail + " already exists");
                 }
 
                 // Validate doctor-specific requirements
@@ -54,8 +62,8 @@ public class UserService {
                 // Create new user
                 User user = new User();
                 user.setFullname(registerRequest.getFullname());
-                user.setEmail(registerRequest.getEmail().toLowerCase());
-                user.setRole(registerRequest.getRole());
+                user.setEmail(normalizedEmail);
+                user.setRole(registerRequest.getRole().toLowerCase());
                 user.setPracticeNumber(registerRequest.getPracticeNumber());
                 user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
@@ -64,7 +72,8 @@ public class UserService {
         }
 
         public UserResponse loginUser(LoginRequest loginRequest) {
-                Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail().toLowerCase());
+                String normalizedEmail = loginRequest.getEmail().toLowerCase();
+                Optional<User> optionalUser = userRepository.findByEmail(normalizedEmail);
 
                 if (optionalUser.isEmpty()) {
                         throw new InvalidCredentialsException("Invalid email or password");
@@ -84,7 +93,7 @@ public class UserService {
                         .map(UserResponse::new);
         }
 
-        public Optional<UserResponse> getUserById(Long id) {
+        public Optional<UserResponse> getUserById(Integer id) {
                 return userRepository.findById(id)
                         .map(UserResponse::new);
         }

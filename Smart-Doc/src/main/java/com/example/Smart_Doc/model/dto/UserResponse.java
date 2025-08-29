@@ -1,15 +1,15 @@
 package com.example.Smart_Doc.model.dto;
 
 import com.example.Smart_Doc.model.entity.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class UserResponse {
 
     private Integer id;
@@ -27,5 +27,4 @@ public class UserResponse {
         this.practiceNumber = user.getPracticeNumber();
         this.createdAt = user.getCreatedAt();
     }
-
 }

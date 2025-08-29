@@ -1,4 +1,5 @@
 package com.example.Smart_Doc.controller;
+
 import com.example.Smart_Doc.model.dto.ApiResponse;
 import com.example.Smart_Doc.model.dto.LoginRequest;
 import com.example.Smart_Doc.model.dto.RegisterRequest;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserResponse>> getUserById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<UserResponse>> getUserById(@PathVariable Integer id) {
         return userService.getUserById(id)
                 .map(user -> {
                     ApiResponse<UserResponse> response = ApiResponse.success("User found", user);

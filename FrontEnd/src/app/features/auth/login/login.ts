@@ -1,18 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   imports: [CommonModule, RouterLink],
   templateUrl: './login.html',
-  styles: ``
 })
 export class Login {
-loginForm: any;
-login() {
-throw new Error('Method not implemented.');
-}
+
+  constructor(private router: Router) {}
+  loginForm = {
+    email: '',
+    password: ''
+  }
+  login() {
+    console.log(
+      "logging in with email: " + this.loginForm.email + " and password: " + this.loginForm.password
+    )
+  }
 
 }
 

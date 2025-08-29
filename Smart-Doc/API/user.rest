@@ -1,7 +1,7 @@
 @HOST = http://localhost:8080
 @SERVER = {{HOST}}/api/v1/users
 
-### REGISTER USER (Frontend format)
+### REGISTER Doctor
 POST {{SERVER}}/registerUser
 Content-Type: application/json
 

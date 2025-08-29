@@ -12,7 +12,7 @@ import java.util.Collections;
 @Data
 @Getter
 @Setter
-class CustomUserPrincipal implements UserDetails {
+public class CustomUserPrincipal implements UserDetails {
     private final User user;
 
     public CustomUserPrincipal(User user) {

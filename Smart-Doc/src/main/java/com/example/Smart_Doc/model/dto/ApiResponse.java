@@ -1,18 +1,17 @@
 package com.example.Smart_Doc.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class ApiResponse<T> {
 
     @JsonProperty("status_code")
     private int statusCode;
-
     private String message;
     private T data;
     private boolean success;
